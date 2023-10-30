@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint
+from flask import Flask
 from Configs import setup_app
 
 # Create a Flask Object

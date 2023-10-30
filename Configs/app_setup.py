@@ -26,7 +26,7 @@ def setup_app(app):
     # First created a base blueprint, which will contain the app name_API
     base_bp = Blueprint('base_bp', __name__, url_prefix=BASE_URL)
 
-    # The nested the users_bp routes into the base_bp, so the URL will concat - Example: /CheckUP/Users
+    # Then nested the users_bp routes into the base_bp, so the URL will concat - Example: /CheckUP/Users
     base_bp.register_blueprint(user_blueprint)
 
     # Then add all the prefix to the app itself
