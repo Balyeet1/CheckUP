@@ -1,10 +1,10 @@
 from flask_cors import CORS
 from flask import Blueprint
 from dotenv import load_dotenv
-from app.Routes import user_blueprint
+from app.Routes import user_blueprint, login_blueprint
 import os
 
-BASE_URL = "/checkUP_API"
+BASE_URL = "/checkup_api"
 
 
 def setup_app(app):
@@ -28,6 +28,7 @@ def setup_app(app):
 
     # Then nested the users_bp routes into the base_bp, so the URL will concat - Example: /CheckUP/Users
     base_bp.register_blueprint(user_blueprint)
+    base_bp.register_blueprint(login_blueprint)
 
     # Then add all the prefix to the app itself
     app.register_blueprint(base_bp)

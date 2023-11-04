@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 
-URL_PREFIX = "/Users"
+URL_PREFIX = "/users"
 
 # Creates a blueprint for the purpose of all the endpoints have a pre default URL prefix
 # Example: /Users/list
