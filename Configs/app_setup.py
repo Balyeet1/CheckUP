@@ -2,6 +2,7 @@ from flask_cors import CORS
 from flask import Blueprint
 from dotenv import load_dotenv
 from app.Routes import user_blueprint, login_blueprint
+from app.token import set_token_key
 import os
 
 BASE_URL = "/checkup_api"
@@ -21,6 +22,9 @@ def setup_app(app):
     # Gets the configurations from the config.py file, and sets the
     # configs to the app instance(Flask Object), depending of the current environment
     app.config.from_object(f'Configs.config.{environment}Config')
+
+    # To use the token_utilis object, first you have to set the token_key
+    set_token_key(app.config["TOKEN_KEY"])
 
     # Using blueprint to build up the URL to interact with this app
     # First created a base blueprint, which will contain the app name_API
