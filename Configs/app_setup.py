@@ -23,14 +23,14 @@ def setup_app(app):
     # configs to the app instance(Flask Object), depending of the current environment
     app.config.from_object(f'Configs.config.{environment}Config')
 
-    # To use the token_utilis object, first you have to set the token_key
+    # To use the token_utilis object, it has to set the token_key
     set_token_key(app.config["TOKEN_KEY"])
 
     # Using blueprint to build up the URL to interact with this app
     # First created a base blueprint, which will contain the app name_API
     base_bp = Blueprint('base_bp', __name__, url_prefix=BASE_URL)
 
-    # Then nested the users_bp routes into the base_bp, so the URL will concat - Example: /CheckUP/Users
+    # Then nested the users_bp routes into the base_bp, so the URL will concat - Example: /checkup_api/users
     base_bp.register_blueprint(user_blueprint)
     base_bp.register_blueprint(login_blueprint)
 
