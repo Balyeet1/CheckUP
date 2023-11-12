@@ -2,7 +2,10 @@ from flask import current_app, request, jsonify
 from app.token import token_utils
 
 
+# TODO: Add max request per minute when validating
+
 def validate_request_header(header):
+    """Receives the request header and validates if it has authorization and the type."""
     if not ("Authorization" in header):
         return (jsonify({'message': 'Missing token.'}), 401), None
 
@@ -19,8 +22,8 @@ def validate_request_header(header):
     return None, token
 
 
-# Add max request per minute
 def validate_API_KEY(func):
+    """ Validates the header and if the API_key given, is the correct one."""
     def wrapper(*args, **kwargs):
         error, token = validate_request_header(request.headers)
 
@@ -36,8 +39,10 @@ def validate_API_KEY(func):
 
 
 def validate_token(func):
+    """ Validates the header and if the token given, has the right signature
+        and a valid token body.
+        \n If the token is valid, returns the token_body."""
     def wrapper(*args, **kwargs):
-        print("hello")
         error, token = validate_request_header(request.headers)
 
         if error is not None:

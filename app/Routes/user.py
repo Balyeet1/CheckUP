@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify
 from .CheckRequest import validate_token
 
 URL_PREFIX = "/users"
@@ -20,7 +20,8 @@ def users_list(token_body):
 
 @user_blueprint.route('/<int:user_id>', methods=['GET', 'POST'], endpoint='/<int:user_id>')
 @validate_token
-def region(user_id):
+def region(user_id, token_body):
     print(user_id)
+    print(token_body)
 
     return jsonify({'message': 'User'}), 200
