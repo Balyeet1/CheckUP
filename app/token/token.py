@@ -54,7 +54,7 @@ class Token:
 
         try:
             return {"has_error": False, "data": jwt.decode(token, self.key)}
-        except BadSignatureError:
+        except (BadSignatureError, ValueError):
             return {"has_error": True, "error": "Invalid token."}
 
     def check_claims(self, claims: dict):
@@ -92,7 +92,7 @@ class Token:
 
         validation = self.check_claims(decoded_token["data"].claims)
 
-        if validation:
+        if validation is not None:
             unencrypted_token["error"] = validation
             return unencrypted_token
 
