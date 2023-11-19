@@ -26,6 +26,7 @@ class ProductionConfig(Config):
     KEY_SIZE = 2048
     PARAMETERS = {"use": "enc", "alg": "RSA-OAEP"}
     TOKEN_KEY = RSAKey.generate_key(key_size=KEY_SIZE, parameters=PARAMETERS)
+    TOKEN_TIMEOUT = 1200
 
     # DB_NAME =
     pass
@@ -39,6 +40,8 @@ class DevelopmentConfig(Config):
 
     # JWT Related
     TOKEN_KEY = RSAKey.import_key(os.getenv("RSA_KEY"))
+    TOKEN_TIMEOUT = 7200
+    pass
 
 
 class TestingConfig(Config):
@@ -46,5 +49,7 @@ class TestingConfig(Config):
     DEBUG = True
     # DB_NAME =
 
+    # JWT Related
     TOKEN_KEY = RSAKey.import_key(os.getenv("RSA_KEY"))
+    TOKEN_TIMEOUT = 1200
     pass

@@ -2,7 +2,7 @@ from flask_cors import CORS
 from flask import Blueprint
 from dotenv import load_dotenv
 from app.Routes import blueprints
-from app.token import set_token_key
+from app.token import set_token_key, set_token_timeout
 import os
 
 BASE_URL = "/checkup_api"
@@ -23,8 +23,9 @@ def setup_app(app):
     # configs to the app instance(Flask Object), depending of the current environment
     app.config.from_object(f'Configs.config.{environment}Config')
 
-    # To use the token_utilis object, it has to set the token_key
+    # To use the token_utilis object, it has to set the token_key and timeout
     set_token_key(app.config["TOKEN_KEY"])
+    set_token_timeout(app.config["TOKEN_TIMEOUT"])
 
     # Using blueprint to build up the URL to interact with this app
     # First created a base blueprint, which will contain the app name_API

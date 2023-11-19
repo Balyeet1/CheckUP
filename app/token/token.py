@@ -14,12 +14,16 @@ class Token:
         self.default_token_header = {"alg": "RSA-OAEP", "enc": "A128GCM"}
         self.iss = os.getenv("ISS", "my.checkup.web")
         self.claims = {"iss": self.iss}
-        self.timeout_seconds = 2000
+        self.timeout_seconds = 0
 
     def set_key(self, key):
         """ Method which receives a key, so that other methods can use it to encrypt
             and unencrypte tokens. if not set, some methods from this class won't work."""
         self.key = key
+
+    def set_timeout(self, seconds: int = 1200):
+        """ Method which receives a seconds, so it can configure the token timeout."""
+        self.timeout_seconds = seconds
 
     def has_key(self) -> bool:
         """Checks if the current instance has a key."""
