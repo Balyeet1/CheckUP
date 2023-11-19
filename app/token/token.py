@@ -1,6 +1,7 @@
 import os
+import time
 from joserfc import jwt
-from joserfc.errors import InvalidClaimError, MissingClaimError, BadSignatureError
+from joserfc.errors import InvalidClaimError, MissingClaimError, BadSignatureError, ExpiredTokenError
 
 
 class Token:
@@ -10,9 +11,10 @@ class Token:
 
     def __init__(self):
         self.key = None
-        self.default_token_header = {"alg": "RS256", 'typ': 'JWT'}
+        self.default_token_header = {"alg": "RSA-OAEP", "enc": "A128GCM"}
         self.iss = os.getenv("ISS", "my.checkup.web")
         self.claims = {"iss": self.iss}
+        self.timeout_seconds = 2000
 
     def set_key(self, key):
         """ Method which receives a key, so that other methods can use it to encrypt
@@ -39,6 +41,7 @@ class Token:
         """ Generates a token, but specifically for auth, receiving only the necessary
             arguments to create the token."""
         body = {
+            "exp": int(time.time()) + self.timeout_seconds,
             "username": username,
         }
 
@@ -65,14 +68,18 @@ class Token:
         claims_validations = jwt.JWTClaimsRegistry(
             iss={"essential": True, "value": self.iss},
             username={"essential": True},
+            exp={"essential": True},
         )
 
         try:
             claims_validations.validate(claims)
+            claims_validations.validate_exp(claims.get("exp"))
         except MissingClaimError:
             return "Missing claim."
         except InvalidClaimError:
             return "Wrong value claim."
+        except ExpiredTokenError:
+            return "The token is expired."
 
     def check_token(self, token: str) -> dict:
         """Receives a token, decodes it and validates the content(claims).

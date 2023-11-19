@@ -24,7 +24,7 @@ class ProductionConfig(Config):
 
     # JWT Related
     KEY_SIZE = 2048
-    PARAMETERS = {"use": "sig", "alg": "RS256"}
+    PARAMETERS = {"use": "enc", "alg": "RSA-OAEP"}
     TOKEN_KEY = RSAKey.generate_key(key_size=KEY_SIZE, parameters=PARAMETERS)
 
     # DB_NAME =
