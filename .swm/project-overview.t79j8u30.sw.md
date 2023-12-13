@@ -7,11 +7,11 @@ app_version: 1.18.44
 
 ## Introduction
 
-This doc gives an overview of the project in terms of technologies being used and apps being created.
-
-<br/>
+This doc gives an overview of the apps within the project.
 
 ## Apps
+
+*   [Swimm](https://swimm.io/) (Documentation App -> This One)
 
 *   [BackCheck](backcheck.s66r05xh.sw.md)(Back End App)
 
@@ -21,10 +21,6 @@ This doc gives an overview of the project in terms of technologies being used an
 <br/>
 
 <br/>
-
-<br/>
-
-
 
 <br/>
 

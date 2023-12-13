@@ -1,6 +1,6 @@
 ---
 id: feo57zi9
-title: BackCheck SetUp
+title: BackCheck Setup
 file_version: 1.1.3
 app_version: 1.18.44
 ---
