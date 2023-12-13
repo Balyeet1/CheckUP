@@ -11,23 +11,29 @@ GitHub: [https://github.com/Balyeet1/CheckUP](https://github.com/Balyeet1/CheckU
 
 This docs has the purpose of explaining what is the BackCheck.
 
-<br/>
-
 ## Explanation
 
 BackCheck is the Back End app of the project CheckUp. The purpose of this app is to separate and encapsulate the business logic and the data of the project, because of, security and scalability. Whit this separation, now its possible to create multiple user interactions apps without needing to create the same business logic and interaction with data.
-
-<br/>
 
 ## Technologies
 
 The app is being build using Python, within it, its being use libraries and frameworks:
 
-Frameworks:
+**Frameworks:**
 
-*   Flask - This
+*   [Flask](https://flask.palletsprojects.com/en/3.0.x/) - This is use to create a web application, offering components to help to create a web server.
 
-*    
+**Libraries:**
+
+*   [Joserfc](https://jose.authlib.org/en/dev/guide/introduction/) - This is use to generate and manage Tokens.
+
+**Backend cloud services:**
+
+*   [Supabase](https://supabase.com/) - This is use for the creation and manage the database, with a API to interact with it.
+<br/>
+
+<br/>
+
 <br/>
 
 <br/>
