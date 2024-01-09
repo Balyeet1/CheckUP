@@ -1,8 +1,8 @@
 from flask_cors import CORS
 from flask import Blueprint
 from dotenv import load_dotenv
-from app.Routes import blueprints
-from app.token import set_token_key, set_token_timeout
+from BackCheck.app.Routes import blueprints
+from BackCheck.app import set_token_key, set_token_timeout
 import os
 
 BASE_URL = "/checkup_api"
