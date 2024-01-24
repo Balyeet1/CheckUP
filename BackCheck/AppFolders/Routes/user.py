@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+
 from .CheckRequest import validate_token
 
 URL_PREFIX = "/users"

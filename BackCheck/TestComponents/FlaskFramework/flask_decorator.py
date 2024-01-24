@@ -30,7 +30,7 @@ def route2():
     return "Hello from Route 2"
 
 
-# Register the blueprint with the Flask app
+# Register the blueprint with the Flask AppFolders
 app.register_blueprint(my_blueprint, url_prefix='/my_blueprint')
 
 if __name__ == '__main__':

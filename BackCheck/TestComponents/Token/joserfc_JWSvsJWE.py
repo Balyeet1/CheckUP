@@ -1,4 +1,4 @@
-from joserfc import jwt, jwe
+from joserfc import jwt
 from joserfc.jwk import OctKey, RSAKey
 
 # Example of a creation of a Json Web Token(JWT) using Json Web Signature(JWS)

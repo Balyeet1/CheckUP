@@ -1,5 +1,6 @@
+from AppFolders.token import token_utils
 from flask import Blueprint, request, jsonify
-from BackCheck.app.token import token_utils
+
 from .CheckRequest import validate_API_KEY
 
 URL_PREFIX = "/login"

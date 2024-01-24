@@ -1,5 +1,5 @@
+from AppFolders.token import token_utils
 from flask import current_app, request, jsonify
-from BackCheck.app.token import token_utils
 
 
 # TODO: Add max request per minute when validating

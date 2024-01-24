@@ -1,7 +1,6 @@
 from joserfc import jwt
-from joserfc.jwk import RSAKey
 from joserfc.errors import InvalidClaimError, MissingClaimError, BadSignatureError
-
+from joserfc.jwk import RSAKey
 from joserfc.registry import HeaderParameter
 
 parameters = {"use": "sig", "alg": "RS256"}

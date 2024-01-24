@@ -1,5 +1,5 @@
-from .user import user_blueprint
 from .login import login_blueprint
+from .user import user_blueprint
 
 blueprints = [
     user_blueprint,
