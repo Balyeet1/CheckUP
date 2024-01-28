@@ -1,6 +1,6 @@
 import os
-
 from AppFolders.token import set_token_key, set_token_timeout
+from AppFolders.data import set_database_connection
 from AppFolders.Routes import blueprints
 from dotenv import load_dotenv
 from flask import Blueprint
@@ -27,6 +27,9 @@ def setup_app(app):
     # To use the token_utilis object, it has to set the token_key and timeout
     set_token_key(app.config["TOKEN_KEY"])
     set_token_timeout(app.config["TOKEN_TIMEOUT"])
+
+    # Connects to the database
+    set_database_connection(app.config["DB_URL"], app.config["DB_KEY"])
 
     # Using blueprint to build up the URL to interact with this AppFolders
     # First created a base blueprint, which will contain the AppFolders name_API

@@ -1,7 +1,15 @@
 from supabase import create_client, Client
 
-supabase: Client = create_client("https://plccucouimuhvrhrhdmr.supabase.co",
-                                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsY2N1Y291aW11aHZyaHJoZG1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc4MDMxMTUsImV4cCI6MjAxMzM3OTExNX0.mb6oiQRacpYxMKJ8hJlHdq2tieeJcazyL_AiiZ6w5OQ")
 
+def connect_database(url, key):
+    """Creates a connection to the database."""
+    try:
+        connection: Client = create_client(url, key)
+        return connection
+    except Exception as e:
+        print("-------------Warning-----------\n",
+              e,
+              "\nPlease check you got the right url and key to connect to the database\n"
+              "-------------Warning-----------")
 
-
+        raise e
