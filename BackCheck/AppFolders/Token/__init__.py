@@ -4,7 +4,7 @@ token_utils = Token()
 
 
 def set_token_key(key):
-    """This function receives a token key, and set in the token_utils object
+    """This function receives a Token key, and set in the token_utils object
     already created."""
     token_utils.set_key(key)
 

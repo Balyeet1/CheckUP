@@ -1,4 +1,4 @@
-from AppFolders.token import token_utils
+from AppFolders.Token import token_utils
 from flask import current_app, request, jsonify
 
 
@@ -7,7 +7,7 @@ from flask import current_app, request, jsonify
 def validate_request_header(header):
     """Receives the request header and validates if it has authorization and the type."""
     if not ("Authorization" in header):
-        return (jsonify({'message': 'Missing token.'}), 401), None
+        return (jsonify({'message': 'Missing Token.'}), 401), None
 
     auth = header.get("Authorization").split(" ")
 
@@ -31,7 +31,7 @@ def validate_API_KEY(func):
             return error
 
         if token != current_app.config["LOGIN_API_KEY"]:
-            return jsonify({'message': 'Invalid token.'}), 401
+            return jsonify({'message': 'Invalid Token.'}), 401
 
         return func(*args, **kwargs)
 
@@ -39,9 +39,9 @@ def validate_API_KEY(func):
 
 
 def validate_token(func):
-    """ Validates the header and if the token given, has the right signature
-        and a valid token body.
-        \n If the token is valid, returns the token_body."""
+    """ Validates the header and if the Token given, has the right signature
+        and a valid Token body.
+        \n If the Token is valid, returns the token_body."""
     def wrapper(*args, **kwargs):
         error, token = validate_request_header(request.headers)
 
@@ -53,6 +53,6 @@ def validate_token(func):
         if decode["has_error"]:
             return jsonify({'message': decode["error"]}), 401
 
-        return func(*args, **kwargs, token_body=decode["data"].claims)
+        return func(*args, **kwargs, token_body=decode["Data"].claims)
 
     return wrapper

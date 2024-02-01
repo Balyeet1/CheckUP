@@ -1,11 +1,11 @@
-from AppFolders.token import token_utils
+from AppFolders.Token import token_utils
 from flask import Blueprint, request, jsonify
 
 from .CheckRequest import validate_API_KEY
 
 URL_PREFIX = "/login"
 
-# Remove this, when connecting to database
+# Remove this, when connecting to Database
 mock_user = {
     "username": "Ricardo",
     "password": "123456",
@@ -27,4 +27,4 @@ def login():
 
     response_token = token_utils.generate_auth_token(username=username)
 
-    return jsonify({'message': 'Successful login', 'token': response_token}), 200
+    return jsonify({'message': 'Successful login', 'Token': response_token}), 200
