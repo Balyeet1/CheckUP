@@ -6,7 +6,7 @@ my_blueprint = Blueprint('my_blueprint', __name__)
 
 # This file demonstrates how to use flask decorator
 # Note that to use the same decorator function in multiple endpoints
-# you got to set "endpoint" in the routes, or else, it raises an error
+# you got to set "endpoint" in the Routes, or else, it raises an error
 
 # Custom decorator
 def my_decorator(func):

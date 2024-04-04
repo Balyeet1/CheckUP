@@ -1,6 +1,6 @@
 import os
-
-from AppFolders.token import set_token_key, set_token_timeout
+from AppFolders.Token import set_token_key, set_token_timeout
+from AppFolders.Data import set_database_connection
 from AppFolders.Routes import blueprints
 from dotenv import load_dotenv
 from flask import Blueprint
@@ -28,11 +28,14 @@ def setup_app(app):
     set_token_key(app.config["TOKEN_KEY"])
     set_token_timeout(app.config["TOKEN_TIMEOUT"])
 
+    # Connects to the Database
+    set_database_connection(app.config["DB_URL"], app.config["DB_KEY"])
+
     # Using blueprint to build up the URL to interact with this AppFolders
     # First created a base blueprint, which will contain the AppFolders name_API
     base_bp = Blueprint('base_bp', __name__, url_prefix=BASE_URL)
 
-    # Then nested the users_bp routes into the base_bp, so the URL will concat - Example: /checkup_api/users
+    # Then nested the users_bp Routes into the base_bp, so the URL will concat - Example: /checkup_api/users
     for blueprint in blueprints:
         base_bp.register_blueprint(blueprint)
 

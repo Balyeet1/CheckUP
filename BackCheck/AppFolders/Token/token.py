@@ -23,7 +23,7 @@ class Token:
         self.key = key
 
     def set_timeout(self, seconds: int = 1200):
-        """ Method which receives a seconds, so it can configure the token timeout."""
+        """ Method which receives a seconds, so it can configure the Token timeout."""
         self.timeout_seconds = seconds
 
     def has_key(self) -> bool:
@@ -31,7 +31,7 @@ class Token:
         return self.key is not None
 
     def generate_token(self, body: dict) -> str:
-        """ Method that receives content(body), with the purpose of storing it in the token.
+        """ Method that receives content(body), with the purpose of storing it in the Token.
             \n Can't use it if a key was not set, to set it use "instance_name".set_key(key)."""
         if not self.has_key():
             raise Exception("Plz set a key, before you use this class.")
@@ -39,12 +39,12 @@ class Token:
         # Concatenates the default claim dict, with the body dict.
         token_body = dict(self.claims, **body)
 
-        # Creates the token with a header, claim(content) and the key.
+        # Creates the Token with a header, claim(content) and the key.
         return jwt.encode(header=self.default_token_header, claims=token_body, key=self.key)
 
     def generate_auth_token(self, username: str) -> str:
-        """ Generates a token, but specifically for auth, receiving only the necessary
-            arguments to create the token."""
+        """ Generates a Token, but specifically for auth, receiving only the necessary
+            arguments to create the Token."""
         body = {
             "exp": int(time.time()) + self.timeout_seconds,
             "username": username,
@@ -53,20 +53,20 @@ class Token:
         return self.generate_token(body)
 
     def decode(self, token: str) -> dict:
-        """ Method that receives a token, and decodes it.
+        """ Method that receives a Token, and decodes it.
             \n Return a dict with a property "has_error", if true also comes with "error" property,
-            if not, comes with a "data" property.
+            if not, comes with a "Data" property.
             \n Can't use it if a key was not set, to set it use "instance_name".set_key(key)."""
         if not self.has_key():
             raise Exception("Plz set a key, before you use this class.")
 
         try:
-            return {"has_error": False, "data": jwt.decode(token, self.key)}
+            return {"has_error": False, "Data": jwt.decode(token, self.key)}
         except (BadSignatureError, ValueError):
-            return {"has_error": True, "error": "Invalid token."}
+            return {"has_error": True, "error": "Invalid Token."}
 
     def check_claims(self, claims: dict):
-        """ Check if the content(claim) of token, contains the correct
+        """ Check if the content(claim) of Token, contains the correct
         values and properties. If it does, return string with the error type."""
 
         # claims_validations contains what information it's going to be validated
@@ -84,15 +84,15 @@ class Token:
         except InvalidClaimError:
             return "Wrong value claim."
         except ExpiredTokenError:
-            return "The token is expired."
+            return "The Token is expired."
 
     def check_token(self, token: str) -> dict:
-        """Receives a token, decodes it and validates the content(claims).
+        """Receives a Token, decodes it and validates the content(claims).
             \n Return a dict with a property "has_error", if true, the "error" property will come with
-            a message, if not, the "data" property will come with the token content(claims)."""
+            a message, if not, the "Data" property will come with the Token content(claims)."""
         unencrypted_token = {
             "has_error": True,
-            "data": "",
+            "Data": "",
             "error": "",
         }
 
@@ -102,13 +102,13 @@ class Token:
             unencrypted_token["error"] = decoded_token["error"]
             return unencrypted_token
 
-        validation = self.check_claims(decoded_token["data"].claims)
+        validation = self.check_claims(decoded_token["Data"].claims)
 
         if validation is not None:
             unencrypted_token["error"] = validation
             return unencrypted_token
 
         unencrypted_token["has_error"] = False
-        unencrypted_token["data"] = decoded_token["data"]
+        unencrypted_token["Data"] = decoded_token["Data"]
 
         return unencrypted_token
