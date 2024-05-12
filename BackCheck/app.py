@@ -1,6 +1,6 @@
 from flask import Flask
 
-from Configs import setup_app
+from AppFolders.Configs import setup_app
 
 # Create a Flask Object
 app = Flask(__name__)

@@ -1,30 +1,34 @@
-from AppFolders.Token import token_utils
 from flask import Blueprint, request, jsonify
-
-from .CheckRequest import validate_API_KEY
+from .CheckRequest import validate_API_KEY_wrapper
+from AppFolders.Controlers import userController
 
 URL_PREFIX = "/login"
-
-# Remove this, when connecting to Database
-mock_user = {
-    "username": "Ricardo",
-    "password": "123456",
-}
-# ----------------------------------------
 
 login_blueprint = Blueprint('login_bp', __name__, url_prefix=URL_PREFIX)
 
 
 @login_blueprint.route(rule='/', methods=['GET'], endpoint='/')
 @login_blueprint.route(rule='', methods=['GET'], endpoint='')
-@validate_API_KEY
+@validate_API_KEY_wrapper
 def login():
-    username = request.json.get("username")
-    password = request.json.get("password")
+    if not hasattr(request, "data"):
+        return jsonify({'message': 'Missing Data'}), 401
 
-    if username != mock_user["username"] or password != mock_user["password"]:
-        return jsonify({'message': 'Wrong username or password.'}), 401
+    data = request.data.decode()
 
-    response_token = token_utils.generate_auth_token(username=username)
+    claims_to_verify = {
+        'iss': {"essential": True, "value": "Check"},
+        'external': {"essential": True}
+    }
 
-    return jsonify({'message': 'Successful login', 'Token': response_token}), 200
+    error, claims = userController.decode_token(data, claims_to_verify)
+
+    if error is not None:
+        return jsonify({'message': 'Data is incorrect.'}), 401
+
+    error, response_token = userController.generate_user_token(external_id=claims["external"])
+
+    if error is not None:
+        return jsonify({'message': error}), 404
+
+    return jsonify({'message': 'Successful login', 'user': response_token}), 200

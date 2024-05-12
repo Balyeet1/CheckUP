@@ -3,5 +3,5 @@ from .database import Database
 
 __all__ = [
     "Database",
-    "connect_database",
+    "connect_database"
 ]

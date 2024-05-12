@@ -20,3 +20,7 @@ build/
 .idea
 
 .idea/
+
+!/AppFolders/Images/Blog/
+/AppFolders/Images/Blog/*.jpg
+/AppFolders/Images/Blog/*.png

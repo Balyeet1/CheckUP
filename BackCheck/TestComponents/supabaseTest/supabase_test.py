@@ -15,6 +15,9 @@ def sign_up_user(user_email, password):
         return supabase.auth.sign_up({
             "email": user_email,
             "password": password,
+            'options': {
+                'emailRedirectTo': 'https://example.com/welcome',
+            },
         })
 
     except AuthApiError as ex:
@@ -33,7 +36,6 @@ def sign_in_user(user_email, password):
     except AuthApiError as ex:
         print(ex)
 
-
 # print(sign_in_user("ricardoldias123@gmail.com", "ViraMilho_123"))
 
-#print(sign_in_user("ricardoldi@gmail.com", "ViraMilho_123"))
+# print(sign_in_user("ricardoldias123@gmail.com", "ViraMilho_123"))
