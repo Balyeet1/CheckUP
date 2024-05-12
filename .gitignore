@@ -21,6 +21,9 @@ build/
 
 .idea/
 
-!/AppFolders/Images/Blog/
-/AppFolders/Images/Blog/*.jpg
-/AppFolders/Images/Blog/*.png
+!/BackCheck/AppFolders/Images/Blog/
+/BackCheck/AppFolders/Images/Blog/*.jpg
+/BackCheck/AppFolders/Images/Blog/*.png
+/BackCheck/AppFolders/Images/Blog/*.svg
+
+/FrontCheckUp/
