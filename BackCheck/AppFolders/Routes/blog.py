@@ -21,10 +21,30 @@ def blogs_list(user: User):
     return jsonify({'blogs': blogs}), 200
 
 
+@blog_blueprint.route('/get', methods=['GET'], endpoint='/get')
+@validate_API_and_token_wrapper
+def get_blog(user: User):
+    blog_id_string = request.args.get("id")
+
+    if not blog_id_string:
+        return jsonify({'message': 'Missing Data'}), 400
+
+    try:
+        blog_id = int(blog_id_string)
+    except ValueError:
+        return jsonify({'message': 'Id is not a string'}), 400
+
+    error, blog = blogController.get_blog_by_id(user=user, blog_id=int(blog_id))
+
+    if error is not None:
+        return jsonify({'message': error}), 400
+
+    return jsonify({'blog': blog.get_blog_dto()}), 200
+
+
 @blog_blueprint.route('/create', methods=['POST'], endpoint='/create')
 @validate_API_and_token_wrapper
 def create_blog(user: User):
-    print(user)
     if not request.form:
         return jsonify({'message': 'Missing Data'}), 400
 
@@ -42,6 +62,53 @@ def create_blog(user: User):
     return jsonify({'blog': blog}), 201
 
 
+@blog_blueprint.route('<int:blog_id>/edit', methods=['PUT'], endpoint='/edit')
+@validate_API_and_token_wrapper
+def edit_blog(user: User, blog_id):
+    if not request.form:
+        return jsonify({'message': 'Missing Data'}), 400
+
+    blog_data = {key: request.form.get(key) for key in ["title", "content"]}
+    blog_data["id"] = blog_id
+    blog_data["image"] = request.files.get("image")
+
+    error, message = blogController.edit_blog(user=user, blog_data=blog_data)
+
+    if error is not None:
+        return jsonify({'message': error})
+
+    return jsonify({'message': message}), 200
+
+
+@blog_blueprint.route('/delete/<int:blog_id>', methods=['DELETE'], endpoint='/delete')
+@validate_API_and_token_wrapper
+def delete_blog(user: User, blog_id):
+    if not blog_id:
+        return jsonify({'message': 'Missing Data'}), 400
+
+    error, message = blogController.delete_blog(user=user, blog_id=int(blog_id))
+
+    if error is not None:
+        return jsonify({'message': error})
+
+    return jsonify({'message': message}), 200
+
+
 @blog_blueprint.route('/images/<filename>')
 def get_blog_images(filename: str):
-    return send_file(os.path.join('AppFolders', 'Images', 'Blog', filename), as_attachment=False)
+    image_path = os.path.join('AppFolders', 'Images', 'Blog', filename)
+
+    if os.path.exists(image_path):
+        return send_file(image_path, as_attachment=False)
+
+    return "No image"
+
+
+@blog_blueprint.route('/download/<filename>')
+def download_blog_images(filename: str):
+    image_path = os.path.join('AppFolders', 'Images', 'Blog', filename)
+
+    if os.path.exists(image_path):
+        return send_file(image_path, as_attachment=True)
+
+    return "No image"

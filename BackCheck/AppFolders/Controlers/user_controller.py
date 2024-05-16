@@ -13,7 +13,7 @@ class UserController:
     def __init__(self, user_service: UserService):
         self.user_service = user_service
         self.default_claims = {
-            'aud': {"essential": True, "value": "Back Check"},
+            'aud': {"essential": True, "value": "Front CheckUP"},
             'iss': {"essential": True, "value": "Check"},
         }
 
@@ -58,8 +58,11 @@ class UserController:
         try:
             error, user = self.user_service.create_user_profile(external_id=external_id, username=username)
 
+            if error is not None:
+                return error, None
+
+            return None, user
+
         except AuthApiError as e:
             print(e.message)
-            return False
-
-        return True
+            return e.message, None

@@ -1,5 +1,8 @@
+from typing import Optional
+
 from gotrue.errors import AuthApiError
 from AppFolders.Data.Database import Database
+from AppFolders.Data.Models import User
 
 
 class UserService(Database):
@@ -19,14 +22,14 @@ class UserService(Database):
         except AuthApiError as e:
             raise e
 
-    def get_user_by_username(self, username: str):
+    def get_user_by_username(self, username: str) -> Optional[User]:
         try:
             data, count = self.db_connection.table("user_profile").select("*").eq("username",
                                                                                   username).execute()
             if not data[1]:
                 return None
 
-            return data[1][0]
+            return User(**data[1][0])
 
         except AuthApiError as e:
             raise e
@@ -40,7 +43,8 @@ class UserService(Database):
             data, count = self.db_connection.table("user_profile").insert(
                 {'external_id': external_id, 'username': username}).execute()
 
-            return None, data[0]
+            print(data)
+            return None, User(**data[1][0])
 
         except AuthApiError as e:
             raise e

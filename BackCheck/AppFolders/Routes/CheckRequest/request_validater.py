@@ -8,12 +8,7 @@ from typing import Optional
 # TODO: Add max request per minute when validating
 
 def user_exists(uuid: str) -> Optional[User]:
-    user_properties = user_service.get_user_by_username(username=uuid)
-
-    if user_properties is None:
-        return None
-
-    return User(**user_properties)
+    return user_service.get_user_by_username(username=uuid)
 
 
 def validate_header_token(header):
