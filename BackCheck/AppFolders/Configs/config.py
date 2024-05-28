@@ -53,7 +53,7 @@ class DevelopmentConfig(Config):
 
     # JWT Related
     TOKEN_KEY = RSAKey.import_key(os.getenv("RSA_KEY"))
-    TOKEN_TIMEOUT = 7200
+    TOKEN_TIMEOUT = 10
 
     # Database related
     DB_URL = os.getenv("BD_URL_DEV")

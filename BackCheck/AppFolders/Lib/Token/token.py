@@ -84,7 +84,7 @@ class Token:
         except InvalidClaimError:
             return "Wrong value claim."
         except ExpiredTokenError:
-            return "The Token is expired."
+            return "The Token has expired."
 
     def check_token(self, token: str) -> dict:
         """Receives a Token, decodes it and validates the content(claims).

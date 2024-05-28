@@ -10,13 +10,16 @@ URL_PREFIX = "/users"
 user_blueprint = Blueprint('user_bp', __name__, url_prefix=URL_PREFIX)
 
 
-@user_blueprint.route('/create', methods=['GET'], endpoint='/create')
+@user_blueprint.route('/create', methods=['POST'], endpoint='/create')
 @validate_API_KEY_wrapper
 def create_user():
-    if not hasattr(request, "data"):
-        return jsonify({'message': 'Missing Data'}), 401
+    if not request.json:
+        return jsonify({'message': 'Missing Data'}), 400
 
-    data = request.data.decode()
+    user_data = request.json.get("Token")
+
+    if user_data is None:
+        return jsonify({'message': 'Missing Data'}), 400
 
     claims_to_verify = {
         'iss': {"essential": True, "value": "Create_Profile"},
@@ -24,7 +27,7 @@ def create_user():
         'username': {"essential": True},
     }
 
-    error, claims = userController.decode_token(data, claims_to_verify)
+    error, claims = userController.decode_token(user_data, claims_to_verify)
 
     if error is not None:
         return jsonify({'message': error}), 401
