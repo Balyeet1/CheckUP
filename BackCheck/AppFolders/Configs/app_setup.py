@@ -12,10 +12,10 @@ BASE_URL = "/checkup_api"
 
 def setup_app(app):
     """This method receives an AppFolders(Flask Object), and configures it."""
-    # Load the .env file to be able to interact with it (get the values)
+    # Load the ..env file to be able to interact with it (get the values)
     load_dotenv()
 
-    # Get the current environment, from the .env file and sets it to Pascal Case
+    # Get the current environment, from the ..env file and sets it to Pascal Case
     environment = os.getenv("FLASK_ENV").title()
 
     # So it doesn't have CORS problems

@@ -21,7 +21,7 @@
 5. Make a copy of the example environment variables file:
 
    ```bash
-   $ cp env_example .env
+   $ cp env_example ..env
    ```
 
 6. Fill the environment variables, contained in the .env file.
