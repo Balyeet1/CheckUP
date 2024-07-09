@@ -61,7 +61,7 @@ class BlogController:
             blog_data["image"] = None if file is None else file.filename
 
             # Call the edit_blog method of the BlogService class
-            error, blog_before_edited = self.blog_service.edit_blog(user_id=user.get_id(), blog_data=blog_data)
+            error, blog_before_edited, edite_blog = self.blog_service.edit_blog(user_id=user.get_id(), blog_data=blog_data)
 
             # If the blog was not edited successfully, return an error message
             if error is not None:
@@ -80,7 +80,7 @@ class BlogController:
         except AuthApiError as e:
             return e.message, None
 
-        return None, "Blog edited successfully."
+        return None, edite_blog
 
     def delete_blog(self, user: User, blog_id: int):
         try:

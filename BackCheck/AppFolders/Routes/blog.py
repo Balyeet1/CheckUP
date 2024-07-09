@@ -72,12 +72,12 @@ def edit_blog(user: User, blog_id):
     blog_data["id"] = blog_id
     blog_data["image"] = request.files.get("image")
 
-    error, message = blogController.edit_blog(user=user, blog_data=blog_data)
+    error, edite_blog = blogController.edit_blog(user=user, blog_data=blog_data)
 
     if error is not None:
         return jsonify({'message': error})
 
-    return jsonify({'message': message}), 200
+    return jsonify({'message': "Blog Updated", 'blog': edite_blog}), 200
 
 
 @blog_blueprint.route('/delete/<int:blog_id>', methods=['DELETE'], endpoint='/delete')
@@ -101,7 +101,8 @@ def get_blog_images(filename: str):
     if os.path.exists(image_path):
         return send_file(image_path, as_attachment=False)
 
-    return "No image"
+    image_not_found_path = os.path.join('AppFolders', 'Images', 'Blog', 'image_not_found.png')
+    return send_file(image_not_found_path, as_attachment=False)
 
 
 @blog_blueprint.route('/download/<filename>')
@@ -111,4 +112,5 @@ def download_blog_images(filename: str):
     if os.path.exists(image_path):
         return send_file(image_path, as_attachment=True)
 
-    return "No image"
+    image_not_found_path = os.path.join('AppFolders', 'Images', 'Blog', 'image_not_found.png')
+    return send_file(image_not_found_path, as_attachment=True)

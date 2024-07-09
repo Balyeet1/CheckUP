@@ -61,7 +61,7 @@ class BlogService(Database):
                     "blog_content_id": blog["id"]
                 }).execute()
 
-            return data[0]
+            return data[1]
 
         except AuthApiError as e:
             print(e.message)
@@ -70,23 +70,26 @@ class BlogService(Database):
     def edit_blog(self, user_id: int, blog_data: dict) -> {Optional[str], Blog}:
         try:
             # Retrieve the blog with the given ID
-            blog = self.get_blog_by_id(blog_data["id"])
+            old_blog = self.get_blog_by_id(blog_data["id"])
 
             # Check if the blog belongs to the user
-            if not blog or blog.get_user_id() != user_id:
+            if not old_blog or old_blog.get_user_id() != user_id:
                 return "Blog does not belong to the user.", None
 
             # Update the blog content
             (self.db_connection.table("blog_content").update({"content": blog_data["content"]})
-             .eq("id", blog.get_content_id())
+             .eq("id", old_blog.get_content_id())
              .execute())
 
             # Update the blog
-            (self.db_connection.table("blog").update({
+            data, count = (self.db_connection.table("blog").update({
                 "title": blog_data["title"], "image": blog_data["image"],
             }).eq('id', blog_data["id"])
              .eq('user_id', user_id).execute())
-            return None, blog
+
+            edite_blog = data[1][0]
+
+            return None, old_blog, edite_blog
 
         except AuthApiError as e:
             print(e.message)
