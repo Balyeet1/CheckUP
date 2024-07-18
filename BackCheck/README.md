@@ -41,7 +41,7 @@
 10. Run the backend app in production:
 
    ```bash
-   $ waitress-serve --threads=4 --listen=*:6699 my_app:app
+   $ waitress-serve --threads=4 --listen=*:8080 my_app:app
    ```
    
 11. Enjoy in prod environment :)

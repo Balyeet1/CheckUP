@@ -7,7 +7,7 @@ import logging
 this_files_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(this_files_dir)
 
-serve(app, port=6699)
+serve(app, port=8080)
 
 logger = logging.getLogger('waitress')
 logger.setLevel(logging.INFO)
