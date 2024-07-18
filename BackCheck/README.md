@@ -29,7 +29,19 @@
 7. Run the backend app:
 
    ```bash
-   $ python3 app.py
+   $ python3 my_app.py
    ```
    
-8. Enjoy :)
+8. Enjoy in dev environment :)
+
+
+9. Access the .env file and change the variable FLASK_ENV to "production"
+
+
+10. Run the backend app in production:
+
+   ```bash
+   $ waitress-serve --threads=4 --listen=*:6699 my_app:app
+   ```
+   
+11. Enjoy in prod environment :)

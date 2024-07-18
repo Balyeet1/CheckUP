@@ -9,3 +9,5 @@ app~=0.0.1
 gotrue~=2.1.0
 bcrypt~=4.1.2
 dotenv
+waitress~=3.0.0
+postgrest~=0.16.8

@@ -45,3 +45,5 @@ def setup_app(app):
 
     # Then add all the prefix to the AppFolders itself
     app.register_blueprint(base_bp)
+
+    return app
