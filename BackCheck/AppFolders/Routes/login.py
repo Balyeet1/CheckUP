@@ -7,14 +7,17 @@ URL_PREFIX = "/login"
 login_blueprint = Blueprint('login_bp', __name__, url_prefix=URL_PREFIX)
 
 
-@login_blueprint.route(rule='/', methods=['GET'], endpoint='/')
-@login_blueprint.route(rule='', methods=['GET'], endpoint='')
+@login_blueprint.route(rule='/', methods=['POST'], endpoint='/')
+@login_blueprint.route(rule='', methods=['POST'], endpoint='')
 @validate_API_KEY_wrapper
 def login():
-    if not hasattr(request, "data"):
+    if not request.json:
+        return jsonify({'message': 'Missing Data'}), 400
+
+    if "data" not in request.json:
         return jsonify({'message': 'Missing Data'}), 401
 
-    data = request.data.decode()
+    data = request.json.get("data")
 
     claims_to_verify = {
         'iss': {"essential": True, "value": "Check"},
@@ -24,7 +27,7 @@ def login():
     error, claims = userController.decode_token(data, claims_to_verify)
 
     if error is not None:
-        return jsonify({'message': 'Data is incorrect.'}), 401
+        return jsonify({'message': error}), 401
 
     error, response_token = userController.generate_user_token(external_id=claims["external"])
 

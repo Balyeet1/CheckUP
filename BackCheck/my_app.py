@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Hello, Cloud Run!'
+    return 'Hello, Cloud Run!2'
 
 
 app = setup_app(app)

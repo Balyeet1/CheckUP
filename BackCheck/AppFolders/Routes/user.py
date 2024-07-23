@@ -35,6 +35,6 @@ def create_user():
     error, user = userController.create_user_profile(external_id=claims["external"], username=claims["username"])
 
     if error is not None:
-        return jsonify({'message': 'Something went wrong'}), 405
+        return jsonify({'message': error}), 405
 
     return jsonify({'message': "User created with success"}), 200

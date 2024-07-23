@@ -27,8 +27,7 @@ class UserController:
 
         try:
             decode_value = jwt.decode(token, key)
-        except BadSignatureError:
-            print("Error on signature")
+        except (BadSignatureError, ValueError):
             return BadSignatureError.error, None
 
         try:

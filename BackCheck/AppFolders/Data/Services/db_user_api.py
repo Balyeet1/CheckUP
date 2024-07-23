@@ -43,7 +43,6 @@ class UserService(Database):
             data, count = self.db_connection.table("user_profile").insert(
                 {'external_id': external_id, 'username': username}).execute()
 
-            print(data)
             return None, User(**data[1][0])
 
         except AuthApiError as e:
