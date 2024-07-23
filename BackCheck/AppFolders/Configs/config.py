@@ -17,7 +17,7 @@ class Config(object):
 
     # JWT Related
     TOKEN_KEY = ""
-    TOKEN_TIMEOUT = 1200
+    TOKEN_TIMEOUT = 50000
 
     # Database related
     DB_URL = ""
@@ -30,17 +30,22 @@ class Config(object):
 
 class ProductionConfig(Config):
     # App API related
-    LOGIN_API_KEY = ""
-    SECRET_KEY = ""
+    SECRET_KEY = os.getenv("SECRET_KEY_PROD")
+    LOGIN_API_KEY = os.getenv("LOGIN_API_KEY", "iHQ^msSp;jmG3!ZWO.1y2%*^SX;JmSniI-wHHjam=33fQzmwkwCg-du*drhVaLtA")
 
-    # JWT related
-    KEY_SIZE = 2048
-    PARAMETERS = {"use": "enc", "alg": "RSA-OAEP"}
-    TOKEN_KEY = RSAKey.generate_key(key_size=KEY_SIZE, parameters=PARAMETERS)
+    # JWT Related
+    TOKEN_KEY = RSAKey.import_key(os.getenv("RSA_KEY"))
+    TOKEN_TIMEOUT = 50000
 
     # Database related
-    DB_URL = ""
-    DB_KEY = ""
+    DB_URL = os.getenv("BD_URL_PROD")
+    DB_KEY = os.getenv("BD_KEY_PROD")
+
+    # JWT related
+    # KEY_SIZE = 2048
+    # PARAMETERS = {"use": "enc", "alg": "RSA-OAEP"}
+    # TOKEN_KEY = RSAKey.generate_key(key_size=KEY_SIZE, parameters=PARAMETERS)
+    # TODO: Test This Later
 
 
 class DevelopmentConfig(Config):

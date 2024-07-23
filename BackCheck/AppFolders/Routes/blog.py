@@ -101,7 +101,7 @@ def get_blog_images(filename: str):
     if os.path.exists(image_path):
         return send_file(image_path, as_attachment=False)
 
-    image_not_found_path = os.path.join('AppFolders', 'Images', 'Blog', 'image_not_found.png')
+    image_not_found_path = os.path.join('AppFolders', 'Images', 'image_not_found.png')
     return send_file(image_not_found_path, as_attachment=False)
 
 
@@ -112,5 +112,5 @@ def download_blog_images(filename: str):
     if os.path.exists(image_path):
         return send_file(image_path, as_attachment=True)
 
-    image_not_found_path = os.path.join('AppFolders', 'Images', 'Blog', 'image_not_found.png')
+    image_not_found_path = os.path.join('AppFolders', 'Images', 'image_not_found.png')
     return send_file(image_not_found_path, as_attachment=True)
