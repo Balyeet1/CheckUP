@@ -96,10 +96,10 @@ def delete_blog(user: User, blog_id):
 
 @blog_blueprint.route('/images/<filename>')
 def get_blog_images(filename: str):
-    image_path = os.path.join('AppFolders', 'Images', 'Blog', filename)
+    image_path = blogController.get_blog_image(filename)
 
-    if os.path.exists(image_path):
-        return send_file(image_path, as_attachment=False)
+    if image_path is not None:
+        return image_path
 
     image_not_found_path = os.path.join('AppFolders', 'Images', 'image_not_found.png')
     return send_file(image_not_found_path, as_attachment=False)
@@ -107,9 +107,9 @@ def get_blog_images(filename: str):
 
 @blog_blueprint.route('/download/<filename>')
 def download_blog_images(filename: str):
-    image_path = os.path.join('AppFolders', 'Images', 'Blog', filename)
+    image_path = blogController.get_blog_image(filename)
 
-    if os.path.exists(image_path):
+    if image_path is not None:
         return send_file(image_path, as_attachment=True)
 
     image_not_found_path = os.path.join('AppFolders', 'Images', 'image_not_found.png')
