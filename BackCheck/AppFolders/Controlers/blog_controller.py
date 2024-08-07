@@ -1,8 +1,8 @@
 from AppFolders.Data.Models import User
 from AppFolders.Data.Services import UserService, BlogService, BlogImagesService
 from gotrue.errors import AuthApiError
-import os
-import time
+from AppFolders.Lib.generate_user_bucket_name import generate_user_bucket_name
+from typing import Optional
 
 
 class BlogController:
@@ -38,8 +38,9 @@ class BlogController:
     def create_user_blog(self, user: User, blog_data: dict):
         try:
             if blog_data["image"] is not None:
+                user_bucket = generate_user_bucket_name(user=user)
                 self.blog_images_service.store_image(image=blog_data["image"].read(),
-                                                     image_name=blog_data["image"].filename)
+                                                     image_name=blog_data["image"].filename, bucket_name=user_bucket)
 
                 blog_data["image"] = blog_data["image"].filename
 
@@ -68,10 +69,11 @@ class BlogController:
                 return error, None
 
                 # Save the new image
-            if file is not None and old_blog["image"] != edite_blog["image"]:
+            if file is not None and old_blog.image != edite_blog["image"]:
                 print("Storing new image")
+                user_bucket = generate_user_bucket_name(user=user)
                 self.blog_images_service.store_image(image=file.read(),
-                                                     image_name=blog_data["image"].filename)
+                                                     image_name=edite_blog["image"], bucket_name=user_bucket)
 
         except AuthApiError as e:
             return e.message, None
@@ -92,5 +94,9 @@ class BlogController:
 
         return None, "Blog deleted successfully."
 
-    def get_blog_image(self, image_name: str):
-        return self.blog_images_service.retrieve_image(image_name=image_name)
+    def get_blog_image(self, user: User, image_name: str) -> Optional[str]:
+        user_bucket = generate_user_bucket_name(user=user)
+        if self.blog_images_service.retrieve_image(image_name=image_name, bucket_name=user_bucket) is None:
+            return None
+
+        return f'AppFolders/Images/Blog/{image_name}'

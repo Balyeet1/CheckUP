@@ -96,7 +96,7 @@ def delete_blog(user: User, blog_id):
 
 @blog_blueprint.route('/images/<filename>')
 def get_blog_images(filename: str):
-    image_path = blogController.get_blog_image(filename)
+    image_path = blogController.get_blog_image(image_name=filename)
 
     if image_path is not None:
         return image_path
@@ -106,8 +106,9 @@ def get_blog_images(filename: str):
 
 
 @blog_blueprint.route('/download/<filename>')
-def download_blog_images(filename: str):
-    image_path = blogController.get_blog_image(filename)
+@validate_API_and_token_wrapper
+def download_blog_images(user: User, filename: str):
+    image_path = blogController.get_blog_image(image_name=filename, user=user)
 
     if image_path is not None:
         return send_file(image_path, as_attachment=True)
