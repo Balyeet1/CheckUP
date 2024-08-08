@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify, request, send_file
 from .CheckRequest import validate_API_and_token_wrapper
 from AppFolders.Controlers import blogController
 from ..Data.Models import User
+from PIL import Image
 
 URL_PREFIX = "/blog"
 
@@ -96,10 +97,10 @@ def delete_blog(user: User, blog_id):
 
 @blog_blueprint.route('/images/<filename>')
 def get_blog_images(filename: str):
-    image_path = blogController.get_blog_image(image_name=filename)
+    # image_path = blogController.get_blog_image(image_name=filename)
 
-    if image_path is not None:
-        return image_path
+    # if image_path is not None:
+    # return image_path
 
     image_not_found_path = os.path.join('AppFolders', 'Images', 'image_not_found.png')
     return send_file(image_not_found_path, as_attachment=False)
@@ -108,10 +109,19 @@ def get_blog_images(filename: str):
 @blog_blueprint.route('/download/<filename>')
 @validate_API_and_token_wrapper
 def download_blog_images(user: User, filename: str):
-    image_path = blogController.get_blog_image(image_name=filename, user=user)
+    blogController.get_blog_image(image_name=filename, user=user)
 
-    if image_path is not None:
-        return send_file(image_path, as_attachment=True)
+    #try:
+     #   image = Image.open(image_bytes)
+      #  mime_type = Image.MIME[image.format]
 
-    image_not_found_path = os.path.join('AppFolders', 'Images', 'image_not_found.png')
-    return send_file(image_not_found_path, as_attachment=True)
+       # if image_bytes is not None:
+
+    image_path = os.path.join('AppFolders', 'Images', 'Blog', filename)
+    return send_file(path_or_file=image_path)
+
+    #except IOError:
+     #   print("Not an image or unsupported image format")
+
+    #image_not_found_path = os.path.join('AppFolders', 'Images', 'image_not_found.png')
+    #return send_file(image_not_found_path, as_attachment=True)

@@ -3,6 +3,7 @@ from AppFolders.Data.Services import UserService, BlogService, BlogImagesService
 from gotrue.errors import AuthApiError
 from AppFolders.Lib.generate_user_bucket_name import generate_user_bucket_name
 from typing import Optional
+from io import BytesIO
 
 
 class BlogController:
@@ -70,7 +71,6 @@ class BlogController:
 
                 # Save the new image
             if file is not None and old_blog.image != edite_blog["image"]:
-                print("Storing new image")
                 user_bucket = generate_user_bucket_name(user=user)
                 self.blog_images_service.store_image(image=file.read(),
                                                      image_name=edite_blog["image"], bucket_name=user_bucket)
@@ -94,9 +94,7 @@ class BlogController:
 
         return None, "Blog deleted successfully."
 
-    def get_blog_image(self, user: User, image_name: str) -> Optional[str]:
+    def get_blog_image(self, user: User, image_name: str) -> Optional[BytesIO]:
         user_bucket = generate_user_bucket_name(user=user)
-        if self.blog_images_service.retrieve_image(image_name=image_name, bucket_name=user_bucket) is None:
-            return None
 
-        return f'AppFolders/Images/Blog/{image_name}'
+        return self.blog_images_service.retrieve_image(image_name=image_name, bucket_name=user_bucket)
