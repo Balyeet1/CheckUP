@@ -3,7 +3,6 @@ from AppFolders.Data.Services import UserService, BlogService, BlogImagesService
 from gotrue.errors import AuthApiError
 from AppFolders.Lib.generate_user_bucket_name import generate_user_bucket_name
 from typing import Optional
-from io import BytesIO
 
 
 class BlogController:
@@ -94,7 +93,12 @@ class BlogController:
 
         return None, "Blog deleted successfully."
 
-    def get_blog_image(self, user: User, image_name: str) -> Optional[BytesIO]:
+    def get_blog_image(self, user: User, image_name: str) -> Optional[str]:
         user_bucket = generate_user_bucket_name(user=user)
 
         return self.blog_images_service.retrieve_image(image_name=image_name, bucket_name=user_bucket)
+
+    def get_blog_image_url(self, user: User, image_name: str) -> Optional[str]:
+        user_bucket = generate_user_bucket_name(user=user)
+
+        return self.blog_images_service.retrieve_image_url(image_name=image_name, bucket_name=user_bucket)

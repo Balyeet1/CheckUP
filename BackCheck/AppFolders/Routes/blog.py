@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request, send_file
 from .CheckRequest import validate_API_and_token_wrapper
 from AppFolders.Controlers import blogController
 from ..Data.Models import User
-from PIL import Image
+import base64
 
 URL_PREFIX = "/blog"
 
@@ -95,33 +95,28 @@ def delete_blog(user: User, blog_id):
     return jsonify({'message': message}), 200
 
 
-@blog_blueprint.route('/images/<filename>')
-def get_blog_images(filename: str):
-    # image_path = blogController.get_blog_image(image_name=filename)
+@blog_blueprint.route('/image/<filename>', methods=['GET'], endpoint='/image')
+@validate_API_and_token_wrapper
+def get_blog_image(user: User, filename: str):
+    encoded_string = blogController.get_blog_image(image_name=filename, user=user)
 
-    # if image_path is not None:
-    # return image_path
+    if encoded_string is not None:
+        return encoded_string
 
     image_not_found_path = os.path.join('AppFolders', 'Images', 'image_not_found.png')
-    return send_file(image_not_found_path, as_attachment=False)
+    with open(image_not_found_path, "rb") as image_file:
+        encoded_string_image_not_found = base64.b64encode(image_file.read()).decode('utf-8')
+
+    return encoded_string_image_not_found
 
 
-@blog_blueprint.route('/download/<filename>')
+@blog_blueprint.route('/image/url/<filename>', methods=['GET'], endpoint='/image/url')
 @validate_API_and_token_wrapper
-def download_blog_images(user: User, filename: str):
-    blogController.get_blog_image(image_name=filename, user=user)
+def get_blog_image_url(user: User, filename: str):
+    image_url = blogController.get_blog_image_url(image_name=filename, user=user)
 
-    #try:
-     #   image = Image.open(image_bytes)
-      #  mime_type = Image.MIME[image.format]
+    if image_url is not None:
+        return image_url
 
-       # if image_bytes is not None:
-
-    image_path = os.path.join('AppFolders', 'Images', 'Blog', filename)
-    return send_file(path_or_file=image_path)
-
-    #except IOError:
-     #   print("Not an image or unsupported image format")
-
-    #image_not_found_path = os.path.join('AppFolders', 'Images', 'image_not_found.png')
-    #return send_file(image_not_found_path, as_attachment=True)
+    image_not_found_path = os.path.join('AppFolders', 'Images', 'image_not_found.png')
+    return send_file(image_not_found_path)

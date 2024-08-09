@@ -1,6 +1,6 @@
 from AppFolders.Data.Database import Database
 from typing import Optional
-from io import BytesIO
+import base64
 
 
 class BlogImagesService(Database):
@@ -53,15 +53,30 @@ class BlogImagesService(Database):
             print(e)
             return None
 
-    def retrieve_image(self, image_name: str, bucket_name: str) -> Optional[BytesIO]:
+    def retrieve_image(self, image_name: str, bucket_name: str) -> Optional[str]:
         try:
             if not self.bucket_exists(bucket_name=bucket_name):
                 print("When trying to retrieve the image, the bucket does´t exists!!")
                 return None
 
-            with open(f"AppFolders/Images/Blog/{image_name}", 'wb+') as f:
-                res = self.db_connection.storage.from_(bucket_name).download(image_name)
-                f.write(res)
+            res = self.db_connection.storage.from_(bucket_name).download(image_name)
+            encoded_string = base64.b64encode(res).decode('utf-8')
+
+            return encoded_string
+
+        except Exception as e:
+            print(e)
+            return None
+
+    def retrieve_image_url(self, image_name: str, bucket_name: str) -> Optional[str]:
+        try:
+            if not self.bucket_exists(bucket_name=bucket_name):
+                print("When trying to retrieve the image, the bucket does´t exists!!")
+                return None
+
+            res = self.db_connection.storage.from_(bucket_name).create_signed_url(image_name, 3000)
+
+            return res["signedURL"]
 
         except Exception as e:
             print(e)
