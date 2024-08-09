@@ -1,6 +1,7 @@
 from .login import login_blueprint
 from .user import user_blueprint
 from .blog import blog_blueprint
+from .image import image_blueprint
 from .api_status import status_blueprint
 
 blueprints = [
@@ -8,6 +9,7 @@ blueprints = [
     login_blueprint,
     blog_blueprint,
     status_blueprint,
+    image_blueprint,
 ]
 
 __all__ = [

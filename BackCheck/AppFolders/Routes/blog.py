@@ -1,9 +1,8 @@
 import os.path
-
 from flask import Blueprint, jsonify, request, send_file
 from .CheckRequest import validate_API_and_token_wrapper
 from AppFolders.Controlers import blogController
-from ..Data.Models import User
+from AppFolders.Data.Models import User
 import base64
 
 URL_PREFIX = "/blog"

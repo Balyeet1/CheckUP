@@ -1,5 +1,5 @@
 from AppFolders.Data.Models import User
-from AppFolders.Data.Services import UserService, BlogService, BlogImagesService
+from AppFolders.Data.Services import UserService, BlogService, ImagesService
 from gotrue.errors import AuthApiError
 from AppFolders.Lib.generate_user_bucket_name import generate_user_bucket_name
 from typing import Optional
@@ -7,10 +7,10 @@ from typing import Optional
 
 class BlogController:
 
-    def __init__(self, user_service: UserService, blog_service: BlogService, blog_images_service: BlogImagesService):
+    def __init__(self, user_service: UserService, blog_service: BlogService, images_service: ImagesService):
         self.user_service = user_service
         self.blog_service = blog_service
-        self.blog_images_service = blog_images_service
+        self.images_service = images_service
 
     def get_user_blog_headers(self, user: User):
 
@@ -39,8 +39,8 @@ class BlogController:
         try:
             if blog_data["image"] is not None:
                 user_bucket = generate_user_bucket_name(user=user)
-                self.blog_images_service.store_image(image=blog_data["image"].read(),
-                                                     image_name=blog_data["image"].filename, bucket_name=user_bucket)
+                self.images_service.store_image(image=blog_data["image"].read(),
+                                                image_name=blog_data["image"].filename, bucket_name=user_bucket)
 
                 blog_data["image"] = blog_data["image"].filename
 
@@ -71,8 +71,8 @@ class BlogController:
                 # Save the new image
             if file is not None and old_blog.image != edite_blog["image"]:
                 user_bucket = generate_user_bucket_name(user=user)
-                self.blog_images_service.store_image(image=file.read(),
-                                                     image_name=edite_blog["image"], bucket_name=user_bucket)
+                self.images_service.store_image(image=file.read(),
+                                                image_name=edite_blog["image"], bucket_name=user_bucket)
 
         except AuthApiError as e:
             return e.message, None
@@ -96,9 +96,9 @@ class BlogController:
     def get_blog_image(self, user: User, image_name: str) -> Optional[str]:
         user_bucket = generate_user_bucket_name(user=user)
 
-        return self.blog_images_service.retrieve_image(image_name=image_name, bucket_name=user_bucket)
+        return self.images_service.retrieve_image(image_name=image_name, bucket_name=user_bucket)
 
     def get_blog_image_url(self, user: User, image_name: str) -> Optional[str]:
         user_bucket = generate_user_bucket_name(user=user)
 
-        return self.blog_images_service.retrieve_image_url(image_name=image_name, bucket_name=user_bucket)
+        return self.images_service.retrieve_image_url(image_name=image_name, bucket_name=user_bucket)

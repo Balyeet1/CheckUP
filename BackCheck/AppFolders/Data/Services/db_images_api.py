@@ -3,7 +3,7 @@ from typing import Optional
 import base64
 
 
-class BlogImagesService(Database):
+class ImagesService(Database):
 
     def __init__(self):
         super().__init__()
@@ -77,6 +77,20 @@ class BlogImagesService(Database):
             res = self.db_connection.storage.from_(bucket_name).create_signed_url(image_name, 3000)
 
             return res["signedURL"]
+
+        except Exception as e:
+            print(e)
+            return None
+
+    def get_all_images_url(self, bucket_name: str) -> Optional[list]:
+
+        try:
+            if not self.bucket_exists(bucket_name=bucket_name):
+                print("When trying to retrieve the image, the bucket does´t exists!!")
+                return None
+
+            res = self.db_connection.storage.from_(bucket_name).list()
+            print(res)
 
         except Exception as e:
             print(e)
