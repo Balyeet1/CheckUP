@@ -12,6 +12,4 @@ class ImagesController:
     def get_images_url_list(self, user: User):
         user_bucket = generate_user_bucket_name(user=user)
 
-        self.images_service.get_all_images_url(user_bucket)
-
-        return None
+        return self.images_service.get_all_images_url(user_bucket)

@@ -90,7 +90,14 @@ class ImagesService(Database):
                 return None
 
             res = self.db_connection.storage.from_(bucket_name).list()
-            print(res)
+
+            image_names = [item['name'] for item in res]
+
+            public_urls = [{"name": name.split(".")[0],
+                            "url": self.db_connection.storage.from_(bucket_name).create_signed_url(name, 5000)[
+                                "signedURL"]} for name in image_names]
+
+            return public_urls
 
         except Exception as e:
             print(e)
