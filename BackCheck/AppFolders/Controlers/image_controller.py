@@ -13,3 +13,10 @@ class ImagesController:
         user_bucket = generate_user_bucket_name(user=user)
 
         return self.images_service.get_all_images_url(user_bucket)
+
+    def store_image(self, user: User, image) -> Optional[str]:
+        user_bucket = generate_user_bucket_name(user=user)
+
+        self.images_service.store_image(image, image.name, user_bucket)
+
+        return self.images_service.retrieve_image_url(image.name, user_bucket)

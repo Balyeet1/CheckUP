@@ -30,12 +30,11 @@ class ImagesService(Database):
             print(f"Bucket '{bucket_name}' got a error creating")
             print(e)
 
-    def store_image(self, image, image_name: str, bucket_name: str) -> Optional[str]:
+    def store_image(self, image, image_name: str, bucket_name: str):
         try:
             self.create_bucket_if_not_exists(bucket_name=bucket_name)
 
             self.db_connection.storage.from_(bucket_name).upload(image_name, image)
-            return self.db_connection.storage.from_(bucket_name).get_public_url(image_name)
 
         except Exception as e:
             print(e)
